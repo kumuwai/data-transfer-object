@@ -1,0 +1,24 @@
+{
+    "name": "kumuwai/data-transfer-object",
+    "description": "",
+    "keywords": [ "dto" ],
+    "require": {
+    },
+    "require-dev": {
+        "mockery/mockery": "~0.9.3",
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joel Hatch",
+            "email": "joel@kumuwai.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Kumuwai\\DataTransferObject\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
