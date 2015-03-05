@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v0.0.3 (3/5/2015)
+------------------
+* Update documentation
+
+
 v0.0.2 (3/5/2015)
 ------------------
 * Nestable array and json output

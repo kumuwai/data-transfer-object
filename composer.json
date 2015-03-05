@@ -1,7 +1,8 @@
 {
     "name": "kumuwai/data-transfer-object",
-    "description": "",
-    "keywords": [ "dto" ],
+    "description": "Load/view dto elements with object, array, json, or dot-notation",
+    "homepage": "https://github.com/kumuwai/data-transfer-object",
+    "keywords": [ "dto", "array", "json", "dot" ],
     "require-dev": {
         "mockery/mockery": "~0.9.3",
         "satooshi/php-coveralls": "dev-master"
@@ -18,5 +19,9 @@
             "Kumuwai\\DataTransferObject\\": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    }
 }
