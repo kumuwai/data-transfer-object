@@ -13,46 +13,54 @@ DataTransferObject
 ===================
 This class provides a simple data transfer object. It's designed to make it easy to add and view data. 
 
-Add data as an array:
-
-    $dto = new DTO(['foo'=>'bar']);
-    $dto['x'] = 'y';
-    $dto[] = new DTO;
-
-Add data as an object:
+You can instantiate the class with an array, arrayable object, or json string. These are all equivalent:
 
     $object = new StdObject;
     $object->foo = 'bar';
 
     $dto = new DTO($object);
-    $dto->x = 'y';
-
-You can also pass in JSON to the constructor:
-
-    $json = "{'a':'b'}";
-    $dto = new DTO($json);
-
-You can create with a static method:
-
-    $dto = DTO::make([...]);
-
-View data as an object or an array:
-
     $dto = new DTO(['foo'=>'bar']);
-    echo $dto['foo'];  // 'bar'
-    echo $dto->foo;    // 'bar'
+    $dto = new DTO('{"foo":"bar"}');
 
-You can also count and iterate the properties:
+    $dto = DTO::make($object);
+    $dto = DTO::make(['foo'=>'bar']);
+    $dto = DTO::make('{"foo":"bar"}');
 
-    $dto = new DTO([...])
-    $count = count($dto);
-    foreach($dto as $key=>$value)
-        // do something
+Read data with array, object, or dot notation:
+
+    echo $dto['x'];
+    echo $dto->x;
+    echo $dto->get('x');
+
+These will also handle nested sets:
+
+    echo $dto['x']['y']['z'];
+    echo $dto->x->y->z;
+    echo $dto->get('x.y.z');
 
 By default, it will return an empty string if a missing property is accessed. If you would like to throw an exception when a missing property is accessed, set the default to Null.
 
     $dto = new DTO(['a'=>'b'], Null);
     (or)  $dto->setDefault(Null);
+
+By default, an empty string will be returned if a missing property is accessed. Other possibilities:
+
+    $dto = new DTO([], 'x');            // instantiate with a given default
+    $dto->setDefault('x');              // change the default
+    $dto->get('path.to.key', 'x');      // override the default for this method call only
+    $dto->setDefault(Null);             // throw an exception instead of returning a value
+
+Add new data with array or object notation:
+
+    $dto['x'] = 'y';
+    $dto->x = 'y';
+
+Count and iterate the properties:
+
+    $dto = new DTO([...])
+    $count = count($dto);
+    foreach($dto as $key=>$value)
+        // do something
 
 
 Installation
@@ -63,22 +71,12 @@ Install the package via Composer. Edit your composer.json file as follows:
         "kumuwai/data-transfer-object": "dev-master"
     }
 
-I have not put this on packagist, yet, so you'll also need to define where to get it:
-
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "https://github.com/kumuwai/data-transfer-object"
-        },
-
 Next, update Composer from the terminal:
 
     composer update
 
-You should be set!
 
 
 TODO
 -------
-* Write a deeply-embedded object as json.
-
+None at this time

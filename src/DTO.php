@@ -31,9 +31,6 @@ class DTO implements ArrayAccess, Countable, Iterator
         $this->keys = Null;
         $this->data = [];
 
-        if (is_null($data))
-            return;
-
         if (is_array($data))
             return $this->data = $this->loadArrayObjects($data);
 
@@ -42,7 +39,7 @@ class DTO implements ArrayAccess, Countable, Iterator
 
         if (is_string($data)) {
             $json = json_decode($data, true);
-            if ( is_array($json) && ! json_last_error())
+            if ( is_array($json) )
                 return $this->data = $this->loadArrayObjects($json);
         }
 
@@ -66,7 +63,6 @@ class DTO implements ArrayAccess, Countable, Iterator
      * Retrieve a given value from a deeply nested array using "dot" notation
      * 
      * @param  string $path     The dot notation value to search for (eg, path.to.key)
-     * @param  any    $default  Return this value if the item is not found 
      */
     public function get($path, $default=Null)
     {
@@ -75,7 +71,7 @@ class DTO implements ArrayAccess, Countable, Iterator
 
         while ($p !== false) {
             if (!isset($current[$p])) {
-                return $default;
+                return is_null($default) ? $this->getDefault($path) : $default;
             }
             $current = $current[$p];
             $p = strtok('.');
@@ -84,25 +80,24 @@ class DTO implements ArrayAccess, Countable, Iterator
         return $current;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($key)
     {
-        return isset($this->data[$offset]);
+        return isset($this->data[$key]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($key)
     {
-        if (isset($this->data[$offset]))
-            return $this->data[$offset];
+        if (isset($this->data[$key]))
+            return $this->data[$key];
 
-        $default = $this->getDefault();
-        if (is_null($default))
-            throw new UndefinedPropertyException("Property $offset is not defined");
-
-        return $default;
+        return $this->getDefault($key);
     }
 
-    public function getDefault()
+    protected function getDefault($key)
     {
+        if (is_null($this->default))
+            throw new UndefinedPropertyException("Property $key is not defined");
+
         return $this->default;
     }
 
@@ -111,21 +106,21 @@ class DTO implements ArrayAccess, Countable, Iterator
         $this->default = $value;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($key, $value)
     {
         $this->keys = Null;
 
-        if (is_null($offset)) {
+        if (is_null($key)) {
             $this->data[] = $value;
         } else {
-            $this->data[$offset] = $value;
+            $this->data[$key] = $value;
         }
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($key)
     {
         $this->keys = Null;
-        unset($this->data[$offset]);
+        unset($this->data[$key]);
     }
 
     public function count()
@@ -190,21 +185,16 @@ class DTO implements ArrayAccess, Countable, Iterator
 
     public function toArray()
     {
-        return $this->data;
+        return array_map(function($value) {
+            if (is_object($value) && method_exists($value, 'toArray'))
+                return $value->toArray();
+            return $value;
+        }, $this->data);
     }
 
     public function toJson()
     {
-        return $this->getJsonForElement($this->data);
+        return json_encode($this->toArray());
     }
 
-    protected function getJsonForElement($element)
-    {
-        return json_encode($element);
-        $output = '';
-        foreach($element as $key=>$value)
-            $output = '';
-
-        return $output;
-    }
 }
