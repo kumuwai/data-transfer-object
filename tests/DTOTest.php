@@ -74,11 +74,35 @@ class DTOTest extends PHPUnit_Framework_TestCase
 
     public function testCanSetDefault()
     {
-        $test = new DTO(Null, 'foo');
+        $test = new DTO([], 'foo');
         $this->assertEquals('foo', $test['something-that-doesnt-exist']);
 
         $test->setDefault('bar');
         $this->assertEquals('bar', $test['something-that-doesnt-exist']);
+    }
+
+    public function testCanReadDefaultViaAnyMethod()
+    {
+        $test = new DTO([], 'x');
+        $this->assertEquals('x', $test->foo);
+        $this->assertEquals('x', $test['foo']);
+        $this->assertEquals('x', $test->get('foo'));
+        $this->assertEquals('x', $test->get('foo.bar.bazz'));
+    }
+
+    public function testCanReadDeeplyNestedArray()
+    {
+        $test = new DTO(['a'=>['b'=>['c'=>['d'=>'foo']]]]);
+        $this->assertEquals('foo', $test->get('a.b.c.d'));
+        $this->assertEquals('foo', $test->a->b->c->d);
+        $this->assertEquals('foo', $test['a']['b']['c']['d']);
+    }
+
+    public function testGetCanOverrideDefault()
+    {
+        $test = new DTO([], 'x');
+        $this->assertEquals('x', $test->get('foo'));
+        $this->assertEquals('A', $test->get('foo','A'));
     }
 
     /**
@@ -86,7 +110,7 @@ class DTOTest extends PHPUnit_Framework_TestCase
      */
     public function testThrowExceptionIfNullDefault()
     {
-        $test = new DTO(Null, Null);
+        $test = new DTO([], Null);
         $a = $test->foo;
     }
 
@@ -145,10 +169,20 @@ class DTOTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException InvalidArgumentException
+     * @dataProvider getInvalidArguments
      */
-    public function testThrowExceptionIfInvalidConstructor()
+    public function testThrowExceptionIfInvalidConstructor($arg)
     {
-        $test = new DTO('1');
+        $test = new DTO($arg);
+    }
+
+    public function getInvalidArguments()
+    {
+        return array(
+            [1],
+            ['string'],
+            ['[{"bad":"json"},{here:["b","c"]}]'],
+        );
     }
 
     public function testCanReset()
@@ -180,10 +214,10 @@ class DTOTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $test->foo);
     }
 
-    // TODO: Make this work correctly
     public function testCanConvertDeeplyNestedArrayToString()
     {
         $test = new DTO([['foo'=>'bar'],['a'=>['b','c']]]);
+        $this->assertEquals('[{"foo":"bar"},{"a":["b","c"]}]', $test->toJson());
     }
 
 }
