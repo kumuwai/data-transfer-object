@@ -1,13 +1,11 @@
 DataTransferObject
 ===================
-<p>
-<a href="https://packagist.org/packages/kumuwai/data-transfer-object"><img src="https://img.shields.io/packagist/v/kumuwai/data-transfer-object.svg" alt="Package"></a>
-<a href="https://travis-ci.org/kumuwai/data-transfer-object"><img src="https://img.shields.io/travis/kumuwai/data-
-transfer-object/master.svg" alt="Build Status"></a>
-<a href='https://coveralls.io/r/kumuwai/data-transfer-object'><img src='https://coveralls.io/repos/kumuwai/data-transfer-object/badge.svg' alt='Coverage Status' /></a>
-<a href="https://scrutinizer-ci.com/g/kumuwai/data-transfer-object"><img src="https://img.shields.io/scrutinizer/g/kumuwai/data-transfer-object.svg" alt="Quality Score"></a>
-<a href="LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT License"></a>
-</p>
+[![Latest Stable Version](https://img.shields.io/packagist/v/kumuwai/data-transfer-object.svg)](https://packagist.org/packages/kumuwai/data-transfer-object)
+[![Build Status](https://img.shields.io/travis/kumuwai/data-transfer-object/master.svg)](https://travis-ci.org/kumuwai/data-transfer-object)
+[![Coverage Status](https://coveralls.io/repos/kumuwai/data-transfer-object/badge.png?branch=master)](https://coveralls.io/r/kumuwai/data-transfer-object)
+[![Quality Score](https://img.shields.io/scrutinizer/g/kumuwai/data-transfer-object.svg)](https://scrutinizer-ci.com/g/kumuwai/data-transfer-object)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
+
 
 This class is designed to make it easy to add and view data. Load objects, arrays, or json; read with object, array, or dot notation; output to json string.
 
