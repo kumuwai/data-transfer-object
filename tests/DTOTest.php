@@ -39,11 +39,9 @@ class DTOTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(3, count($test));
     }
 
-    public function testImplementsIteratorInterface()
+    public function testWorksAsIterator()
     {
         $test = new DTO(['a'=>'foo','b'=>'bar','c'=>'cat']);
-
-        $this->assertInstanceOf('Iterator', $test);
 
         $test2 = [];
         foreach($test as $key=>$value)
@@ -218,6 +216,23 @@ class DTOTest extends PHPUnit_Framework_TestCase
     {
         $test = new DTO([['foo'=>'bar'],['a'=>['b','c']]]);
         $this->assertEquals('[{"foo":"bar"},{"a":["b","c"]}]', $test->toJson());
+    }
+
+    public function testCanGetKeys()
+    {
+        $json = '[{"name":"foo"},{"name":"bar"},{"name":"fizz"},{"name":"buzz"}]';
+        $test = new DTO($json);
+
+        $this->assertEquals([0,1,2,3], $test->getKeys());
+    }
+
+    public function testCanGetKeyInForEachStatement()
+    {
+        $json = '[{"name":"foo"},{"name":"bar"},{"name":"fizz"},{"name":"buzz"}]';
+        $test = new DTO($json);
+
+        foreach ($test as $key=>$item)
+            $this->assertTrue(is_integer($key));
     }
 
 }

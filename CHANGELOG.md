@@ -1,9 +1,11 @@
 Changelog
 =========
 
-v0.0.3 (3/5/2015)
+v0.0.3 (3/6/2015)
 ------------------
 * Update documentation
+* Include .gitattributes
+* Extract iteration methods to DTOIterator class
 
 
 v0.0.2 (3/5/2015)

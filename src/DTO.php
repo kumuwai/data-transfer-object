@@ -1,16 +1,14 @@
 <?php namespace Kumuwai\DataTransferObject;
 
 use InvalidArgumentException;
+use IteratorAggregate;
 use ArrayAccess;
 use Countable;
-use Iterator;
 
 
-class DTO implements ArrayAccess, Countable, Iterator
+class DTO implements ArrayAccess, Countable, IteratorAggregate
 {
     protected $data;
-    protected $pointer;
-    protected $keys;
     protected $default;
 
     public function __construct($data=[], $default='')
@@ -27,8 +25,6 @@ class DTO implements ArrayAccess, Countable, Iterator
 
     public function reset($data)
     {
-        $this->pointer = 0;
-        $this->keys = Null;
         $this->data = [];
 
         if (is_array($data))
@@ -43,7 +39,7 @@ class DTO implements ArrayAccess, Countable, Iterator
                 return $this->data = $this->loadArrayObjects($json);
         }
 
-        throw new InvalidArgumentException('Please use an array to initialize this class');
+        throw new InvalidArgumentException('Please initialize this class with an array, arrayable object, or JSON string');
     }
 
     private function loadArrayObjects($array)
@@ -108,8 +104,6 @@ class DTO implements ArrayAccess, Countable, Iterator
 
     public function offsetSet($key, $value)
     {
-        $this->keys = Null;
-
         if (is_null($key)) {
             $this->data[] = $value;
         } else {
@@ -119,7 +113,6 @@ class DTO implements ArrayAccess, Countable, Iterator
 
     public function offsetUnset($key)
     {
-        $this->keys = Null;
         unset($this->data[$key]);
     }
 
@@ -128,39 +121,14 @@ class DTO implements ArrayAccess, Countable, Iterator
         return count($this->data);
     }
 
-    public function current()
+    public function getIterator() 
     {
-        $key = $this->getKeys()[$this->pointer];
-        return $this->data[$key];
+        return new DTOIterator($this->data);
     }
 
-    public function key()
+    public function getKeys()
     {
-        return $this->getKeys()[$this->pointer];
-    }
-
-    public function next()
-    {
-        $this->pointer ++;
-    }
-
-    public function rewind()
-    {
-        $this->pointer = 0;
-    }
-
-    public function valid()
-    {
-        $keys = $this->getKeys();
-        return isset($keys[$this->pointer]);
-    }
-
-    protected function getKeys()
-    {
-        if ( ! $this->keys)
-            $this->keys = array_keys($this->data);
-
-        return $this->keys;
+        return $this->getIterator()->getKeys();
     }
 
     public function __set($key, $value)
