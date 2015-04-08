@@ -160,9 +160,9 @@ class DTO implements ArrayAccess, Countable, IteratorAggregate
         }, $this->data);
     }
 
-    public function toJson()
+    public function toJson($options = 0)
     {
-        return json_encode($this->toArray());
+        return json_encode($this->toArray(), $options);
     }
 
 }

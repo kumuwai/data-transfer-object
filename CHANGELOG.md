@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v0.0.4 (4/8/2015)
+-----------------
+* Include support for Laravel 4 and Laravel 5
+
+
 v0.0.3 (3/6/2015)
 ------------------
 * Update documentation

@@ -133,6 +133,12 @@ class DTOTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('{"a":"b"}', $test->toJson());
     }
 
+    public function testCanReturnDataAsJsonWithOptions()
+    {
+        $test = new DTO(['a'=>'1']);
+        $this->assertEquals('{"a":1}', $test->toJson(JSON_NUMERIC_CHECK));
+    }
+
     public function testCanLoadDataAsJson()
     {
         $test = new DTO('{"a":"b"}');

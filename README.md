@@ -67,17 +67,20 @@ foreach($dto as $key=>$value)
     // do something
 ```
 
-LaravelDTO
-----------
-This is a version of the data transfer object that implements JsonableInterface and ArrayableInterface. Use this class if you want Laravel to work with DTOs as first-class Laravel objects.
+Laravel Support
+----------------
+There are two versions of the data transfer object that implement Laravel-specific interfaces. Use one of these classes if you want Laravel to work with DTOs as first-class Laravel objects.
 
-You can use this class to sanitize output before you send it to a view, eg:
+* Laravel4DTO implements JsonableInterface and ArrayableInterface
+* Laravel5DTO implements Jsonable and Arrayable
+
+You can use these to sanitize output before you send it to a view, eg:
 
 ```php
 $models = Model::all();
 $output = [];
 foreach($models as $model)
-    $output[] = new LaravelDTO([
+    $output[] = new Laravel4DTO([
         'name' => $model->name,
         'paid' => $model->payments->sum('payment_amount'),
         ...

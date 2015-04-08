@@ -4,6 +4,6 @@ use Illuminate\Support\Contracts\JsonableInterface;
 use Illuminate\Support\Contracts\ArrayableInterface;
 
 
-class LaravelDTO extends DTO implements ArrayableInterface, JsonableInterface
+class Laravel4DTO extends DTO implements ArrayableInterface, JsonableInterface
 {
 }
